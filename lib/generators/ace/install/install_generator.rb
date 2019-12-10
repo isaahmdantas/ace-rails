@@ -6,15 +6,18 @@ module Ace
       @@ace_version = "0.1.6"
       @@ace_version_file = "ace-#{@@ace_version}.tgz"
       # @@ace_url = "https://github.com/downloads/ajaxorg/ace/#{@@ace_version_file}"
-      @@ace_url = "http://cloud.github.com/downloads/ajaxorg/ace/#{@@ace_version_file}"
+      # @@ace_url = "http://cloud.github.com/downloads/ajaxorg/ace/#{@@ace_version_file}"
+      @@ace_url = "https://codeload.github.com/ajaxorg/ace-builds/zip/master"
+      @@ace_file = "ace-builds-master.zip"
+      
       
       @@tmp_base = "tmp/ace-install"
-      @@tmp_file = File.join @@tmp_base, @@ace_version_file
-      @@tmp_src_base = File.join @@tmp_base, "ace-#{@@ace_version}", "src"
+      @@tmp_file = File.join @@tmp_base, @@ace_file
+      @@tmp_src_base = File.join @@tmp_base, "ace-builds-master", "src"
       
       @@target_src = "public/javascripts/ace"
       
-      class_option :download, :type => :boolean, :default => true, :desc => "Download and install ACE (#{@@ace_version}) to #{@@target_src}."
+      class_option :download, :type => :boolean, :default => true, :desc => "Download and install ACE (#{@@ace_file}) to #{@@target_src}."
       class_option :stylesheet, :type => :boolean, :default => true, :desc => "Creates a default stylesheet and includes it to the application layout"
       def self.source_root
         File.dirname(__FILE__) + "/templates"
@@ -27,10 +30,10 @@ module Ace
         remove_dir @@target_src
         get @@ace_url, @@tmp_file
         inside @@tmp_base do
-          run("tar xzf #{@@ace_version_file}")
+          run("tar xzf #{@@ace_file}")
         end
 
-        say_status("copying", "ace (#{@@ace_version})", :green)
+        say_status("copying", "ace (#{@@ace_file})", :green)
         FileUtils.cp_r("#{File.expand_path @@tmp_src_base}", @@target_src)
         
         remove_dir @@tmp_base
